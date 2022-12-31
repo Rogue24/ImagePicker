@@ -17,7 +17,6 @@
 		002E78F8295D3CA70071E30C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002E78F7295D3CA70071E30C /* ImagePicker.swift */; };
 		002E78FA295D3CF80071E30C /* ImagePickerObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002E78F9295D3CF80071E30C /* ImagePickerObject.swift */; };
 		0053547B296047A600E52CBB /* ImagePicker.API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0053547A296047A600E52CBB /* ImagePicker.API.swift */; };
-		0053547D296047B400E52CBB /* ImagePicker.Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0053547C296047B400E52CBB /* ImagePicker.Controller.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +32,6 @@
 		002E78F7295D3CA70071E30C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		002E78F9295D3CF80071E30C /* ImagePickerObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerObject.swift; sourceTree = "<group>"; };
 		0053547A296047A600E52CBB /* ImagePicker.API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.API.swift; sourceTree = "<group>"; };
-		0053547C296047B400E52CBB /* ImagePicker.Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.Controller.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,7 +82,6 @@
 			children = (
 				002E78F7295D3CA70071E30C /* ImagePicker.swift */,
 				0053547A296047A600E52CBB /* ImagePicker.API.swift */,
-				0053547C296047B400E52CBB /* ImagePicker.Controller.swift */,
 				002E78F9295D3CF80071E30C /* ImagePickerObject.swift */,
 			);
 			path = ImagePicker;
@@ -163,7 +160,6 @@
 			files = (
 				002E78E1295D33A40071E30C /* ViewController.swift in Sources */,
 				002E78FA295D3CF80071E30C /* ImagePickerObject.swift in Sources */,
-				0053547D296047B400E52CBB /* ImagePicker.Controller.swift in Sources */,
 				002E78DD295D33A40071E30C /* AppDelegate.swift in Sources */,
 				0053547B296047A600E52CBB /* ImagePicker.API.swift in Sources */,
 				002E78F8295D3CA70071E30C /* ImagePicker.swift in Sources */,
