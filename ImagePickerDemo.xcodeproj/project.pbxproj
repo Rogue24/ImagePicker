@@ -30,6 +30,7 @@
 		002E78F7295D3CA70071E30C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		002E78F9295D3CF80071E30C /* ImagePickerObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerObject.swift; sourceTree = "<group>"; };
 		0053547A296047A600E52CBB /* ImagePicker.API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.API.swift; sourceTree = "<group>"; };
+		0053547E296078A800E52CBB /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +63,7 @@
 		002E78DB295D33A40071E30C /* ImagePickerDemo */ = {
 			isa = PBXGroup;
 			children = (
+				0053547E296078A800E52CBB /* README.md */,
 				002E78F2295D39B80071E30C /* ImagePicker */,
 				002E78DC295D33A40071E30C /* AppDelegate.swift */,
 				002E78DE295D33A40071E30C /* SceneDelegate.swift */,
