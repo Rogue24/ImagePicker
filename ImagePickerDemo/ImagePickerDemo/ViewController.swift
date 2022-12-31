@@ -26,6 +26,18 @@ class ViewController: UIViewController {
     }
 
     @IBAction func photograph() {
+        // 基于闭包返回
+//        ImagePicker.photograph { [weak self] result in
+//            guard let self = self else { return }
+//            switch result {
+//            case let .success(image):
+//                self.setupImage(image)
+//            case let .failure(pickError):
+//                pickError.log()
+//            }
+//        }
+        
+        // 结构化并发返回
         Task {
             do {
                 let image = try await ImagePicker.photograph()
@@ -39,6 +51,24 @@ class ViewController: UIViewController {
     }
     
     @IBAction func openAlbum() {
+        // 基于闭包返回
+//        ImagePicker.openAlbumForObject { [weak self] result in
+//            guard let self = self else { return }
+//            switch result {
+//            case let .success(object):
+//                if let imageData = object.imageData, let image = UIImage(data: imageData) {
+//                    self.setupImage(image)
+//                } else if let videoURL = object.videoURL {
+//                    self.setupVideo(videoURL)
+//                } else {
+//                    self.reset()
+//                }
+//            case let .failure(pickError):
+//                pickError.log()
+//            }
+//        }
+        
+        // 结构化并发返回
         Task {
             do {
                 let object: AlbumObject = try await ImagePicker.openAlbum()
@@ -64,10 +94,6 @@ class ViewController: UIViewController {
         present(playerVC, animated: true) {
             playerVC.player?.play()
         }
-    }
-    
-    @IBAction func showSwiftUIView(_ sender: Any) {
-        print("jpjpjp 敬请期待")
     }
 }
 

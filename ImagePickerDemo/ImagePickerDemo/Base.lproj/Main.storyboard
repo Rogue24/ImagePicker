@@ -17,14 +17,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iga-dp-7W7">
-                                <rect key="frame" x="298.33333333333331" y="59" width="78.666666666666686" height="34.333333333333343"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="tinted" title="SwiftUI"/>
-                                <connections>
-                                    <action selector="showSwiftUIView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dQX-BM-lRM"/>
-                                </connections>
-                            </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QoN-qj-akd">
                                 <rect key="frame" x="16" y="245.66666666666663" width="361" height="361"/>
                                 <color key="backgroundColor" systemColor="systemGray4Color"/>
@@ -86,7 +78,6 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="iga-dp-7W7" secondAttribute="trailing" constant="16" id="DYd-Z1-zyS"/>
                             <constraint firstItem="qc4-Ta-8BX" firstAttribute="centerY" secondItem="QoN-qj-akd" secondAttribute="centerY" id="GYd-nc-HOl"/>
                             <constraint firstItem="Ef6-yK-kx7" firstAttribute="trailing" secondItem="QoN-qj-akd" secondAttribute="trailing" id="Rtx-pH-xu2"/>
                             <constraint firstItem="Ef6-yK-kx7" firstAttribute="top" secondItem="QoN-qj-akd" secondAttribute="top" id="WSW-xl-6by"/>
@@ -96,8 +87,6 @@
                             <constraint firstItem="Ef6-yK-kx7" firstAttribute="leading" secondItem="QoN-qj-akd" secondAttribute="leading" id="daB-w7-nnq"/>
                             <constraint firstItem="QoN-qj-akd" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="e3j-m5-O4h"/>
                             <constraint firstItem="QoN-qj-akd" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gAk-NO-kCe"/>
-                            <constraint firstItem="iga-dp-7W7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" symbolic="YES" id="iKj-b3-29s"/>
-                            <constraint firstItem="iga-dp-7W7" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="wgx-dR-8uP"/>
                             <constraint firstItem="D73-tv-a3W" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="xk6-lK-2QM"/>
                         </constraints>
                     </view>

@@ -80,33 +80,39 @@ extension ImagePicker {
         
         // MARK: UIImagePickerControllerDelegate
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            // 获取结果
             do {
-                let object = try T.fetchFromPicker(info)
-                result = .success(object)
+                result = .success(try T.fetchFromPicker(info))
             } catch let pickError as ImagePicker.PickError {
                 result = .failure(pickError)
             } catch {
                 result = .failure(.other(error))
             }
-            imagePickerControllerDidCancel(picker)
+            
+            // 解锁，抛出结果
+            tryUnlock()
+            
+            // 关闭控制器
+            dismiss(animated: true)
         }
         
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+            // 解锁
             tryUnlock()
-            picker.dismiss(animated: true)
+            
+            // 关闭控制器
+            dismiss(animated: true)
         }
     }
 }
 
 // MARK: - Open album
 extension ImagePicker.Controller {
-    /// async/await
     static func openAlbum<T: ImagePickerObject>(_ mediaType: ImagePicker.PickType) async throws -> T {
         let picker: ImagePicker.Controller<T> = try showAlbumPicker(mediaType: mediaType)
         return try await picker.pickObject()
     }
     
-    /// closure
     static func openAlbum<T: ImagePickerObject>(_ mediaType: ImagePicker.PickType, completion: @escaping ImagePicker.Completion<T>) {
         do {
             let picker: ImagePicker.Controller<T> = try showAlbumPicker(mediaType: mediaType)
@@ -121,13 +127,11 @@ extension ImagePicker.Controller {
 
 // MARK: - Photograph
 extension ImagePicker.Controller {
-    /// async/await
     static func photograph() async throws -> UIImage {
         let picker = try showPhotographPicker()
         return try await picker.pickObject()
     }
     
-    /// closure
     static func photograph(completion: @escaping ImagePicker.Completion<UIImage>) {
         do {
             let picker = try showPhotographPicker()
@@ -181,11 +185,20 @@ private extension ImagePicker.Controller {
     func pickObject(completion: @escaping ImagePicker.Completion<T>) {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else {
-                completion(.failure(.userCancel))
+                DispatchQueue.main.async {
+                    completion(.failure(.userCancel))
+                }
                 return
             }
+            
+            // 加锁，等待代理方法的触发
             self.tryLock()
-            completion(self.result ?? .failure(.userCancel))
+            
+            // 来到这里就是已经获取结果or用户点击取消，
+            // 回到主线程将结果抛出。
+            DispatchQueue.main.async {
+                completion(self.result ?? .failure(.userCancel))
+            }
         }
     }
 }

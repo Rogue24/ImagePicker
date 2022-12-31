@@ -13,7 +13,6 @@
 		002E78E4295D33A40071E30C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 002E78E2295D33A40071E30C /* Main.storyboard */; };
 		002E78E6295D33A40071E30C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 002E78E5295D33A40071E30C /* Assets.xcassets */; };
 		002E78E9295D33A40071E30C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 002E78E7295D33A40071E30C /* LaunchScreen.storyboard */; };
-		002E78F1295D39440071E30C /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002E78F0295D39440071E30C /* SwiftUIView.swift */; };
 		002E78F8295D3CA70071E30C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002E78F7295D3CA70071E30C /* ImagePicker.swift */; };
 		002E78FA295D3CF80071E30C /* ImagePickerObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002E78F9295D3CF80071E30C /* ImagePickerObject.swift */; };
 		0053547B296047A600E52CBB /* ImagePicker.API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0053547A296047A600E52CBB /* ImagePicker.API.swift */; };
@@ -28,7 +27,6 @@
 		002E78E5295D33A40071E30C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		002E78E8295D33A40071E30C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		002E78EA295D33A40071E30C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		002E78F0295D39440071E30C /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		002E78F7295D3CA70071E30C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		002E78F9295D3CF80071E30C /* ImagePickerObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerObject.swift; sourceTree = "<group>"; };
 		0053547A296047A600E52CBB /* ImagePicker.API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.API.swift; sourceTree = "<group>"; };
@@ -64,11 +62,10 @@
 		002E78DB295D33A40071E30C /* ImagePickerDemo */ = {
 			isa = PBXGroup;
 			children = (
+				002E78F2295D39B80071E30C /* ImagePicker */,
 				002E78DC295D33A40071E30C /* AppDelegate.swift */,
 				002E78DE295D33A40071E30C /* SceneDelegate.swift */,
 				002E78E0295D33A40071E30C /* ViewController.swift */,
-				002E78F0295D39440071E30C /* SwiftUIView.swift */,
-				002E78F2295D39B80071E30C /* ImagePicker */,
 				002E78E2295D33A40071E30C /* Main.storyboard */,
 				002E78E5295D33A40071E30C /* Assets.xcassets */,
 				002E78E7295D33A40071E30C /* LaunchScreen.storyboard */,
@@ -163,7 +160,6 @@
 				002E78DD295D33A40071E30C /* AppDelegate.swift in Sources */,
 				0053547B296047A600E52CBB /* ImagePicker.API.swift in Sources */,
 				002E78F8295D3CA70071E30C /* ImagePicker.swift in Sources */,
-				002E78F1295D39440071E30C /* SwiftUIView.swift in Sources */,
 				002E78DF295D33A40071E30C /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
