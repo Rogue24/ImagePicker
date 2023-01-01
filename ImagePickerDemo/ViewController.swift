@@ -91,8 +91,8 @@ class ViewController: UIViewController {
         guard let videoURL = self.videoURL else { return }
         let playerVC = AVPlayerViewController()
         playerVC.player = AVPlayer(url: videoURL)
-        present(playerVC, animated: true) {
-            playerVC.player?.play()
+        present(playerVC, animated: true) { [weak playerVC] in
+            playerVC?.player?.play()
         }
     }
 }
@@ -133,7 +133,7 @@ extension ViewController {
             self.imgView.image = image
         }
         
-        imgHeight.constant = self.imgWidth.constant
+        imgHeight.constant = imgWidth.constant
         if let image = image {
             imgHeight.constant *= (image.size.height / image.size.width)
             if imgHeight.constant > 600 { imgHeight.constant = 600 }
