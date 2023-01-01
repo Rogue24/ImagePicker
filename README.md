@@ -46,7 +46,8 @@ private extension ImagePicker.Controller {
     // - 外部调用：let object: T? = try? await picker.pickObject()，等待并同步获取结果
     func pickObject() async throws -> T {
         try await withCheckedThrowingContinuation { continuation in
-            // 修改以前闭包的实现：将[在代理方法中返回的结果]通过`continuation`实现外部同步返回
+            // 在以前的方式中这个闭包是给外部使用的，现在的方式修改成【内部使用】：
+            // 外部先卡住函数，等待代理方法的调起，然后通过`continuation`将结果返回给外部，实现同步处理。
             pickObject() { result in
                 continuation.resume(with: result)
             }
