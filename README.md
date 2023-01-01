@@ -21,7 +21,7 @@ func getPhoto() {
 
 答案是**肯定可以**的啦。
 
-从[Swift中的async/await代码实例详解](https://juejin.cn/post/7169914508360548360#heading-9)这篇文章中得知，可以通过`withCheckedThrowingContinuation`将【基于闭包返回】转换成【结构化并发返回】，实现一句代码获取系统相册照片：
+从[Swift中的async/await代码实例详解](https://juejin.cn/post/7169914508360548360#heading-9)这篇文章中得知，可以通过`withCheckedThrowingContinuation`将【基于闭包异步处理结果】转换成【结构化并发同步处理结果】，实现一句代码获取系统相册照片：
 ```swift
 func getPhoto() async {
     let image: UIImage? = try? await ImagePicker.openAlbum()
@@ -30,38 +30,25 @@ func getPhoto() async {
 ```
 这样看上去就真的超简洁了~
 
-这其中需要解决的问题是：由于`UIImagePickerController`是通过代理方法返回结果的（用户点击才触发），也就是在代码层面上压根不知道这个代理方法何时会被调用，于是我通过**对子线程加锁**的方式来等待代理方法的触发，从而实现“同步”结果返回：
+- 主要实现方式：
 ```swift
 // MARK: - Pick object handle
 private extension ImagePicker.Controller {
-    // 通过`withCheckedThrowingContinuation`将【基于闭包返回】转换成【结构化并发返回】，
-    // 外部调用是这样的：let object: T = await ImagePicker.pickObject()
-    func pickObject() async throws -> T {
-        try await withCheckedThrowingContinuation { continuation in
-            pickObject() { result in
-                continuation.resume(with: result)
-            }
-        }
+    // 以前的方式：
+    // - 保存闭包，直至代理方法的调起，然后通过该闭包以返回结果
+    // - 外部调用：picker.pickObject() { result in ...... }，通过闭包异步获取结果
+    func pickObject(completion: @escaping ImagePicker.Completion<T>) {
+        self.completion = completion
     }
     
-    // 以前的做法：保存闭包，然后在代理方法中调用闭包返回结果。
-    // 现在改成：开启一个子线程等待代理方法的触发，然后在代理方法中获取结果、解锁。
-    func pickObject(completion: @escaping ImagePicker.Completion<T>) {
-        DispatchQueue.global().async { [weak self] in
-            guard let self = self else {
-                DispatchQueue.main.async {
-                    completion(.failure(.userCancel))
-                }
-                return
-            }
-            
-            // 加锁，等待代理方法的触发
-            self.tryLock()
-            
-            // 来到这里就是已经获取结果or用户点击取消，
-            // 回到主线程将结果抛出。
-            DispatchQueue.main.async {
-                completion(self.result ?? .failure(.userCancel))
+    // 现在的方式：
+    // - 通过`withCheckedThrowingContinuation`将【基于闭包异步处理结果】转换成【结构化并发同步处理结果】
+    // - 外部调用：let object: T? = try? await picker.pickObject()，等待并同步获取结果
+    func pickObject() async throws -> T {
+        try await withCheckedThrowingContinuation { continuation in
+            // 修改以前闭包的实现：将[在代理方法中返回的结果]通过`continuation`实现外部同步返回
+            pickObject() { result in
+                continuation.resume(with: result)
             }
         }
     }
@@ -69,7 +56,8 @@ private extension ImagePicker.Controller {
     // MARK: - UIImagePickerControllerDelegate
     // 用户选择了照片/视频
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        // 获取结果
+        // 1.获取结果
+        let result: Result<T, ImagePicker.PickError>
         do {
             result = .success(try T.fetchFromPicker(info))
         } catch let pickError as ImagePicker.PickError {
@@ -78,19 +66,19 @@ private extension ImagePicker.Controller {
             result = .failure(.other(error))
         }
         
-        // 解锁，抛出结果
-        tryUnlock()
+        // 2.返回结果
+        completion?(result)
         
-        // 关闭控制器
+        // 3.关闭控制器
         dismiss(animated: true)
     }
     
     // 用户点击了取消
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        // 解锁
-        tryUnlock()
+        // 1.返回结果：用户点击取消
+        completion?(.failure(.userCancel))
         
-        // 关闭控制器
+        // 2.关闭控制器
         dismiss(animated: true)
     }
 }
@@ -112,6 +100,7 @@ let image: UIImage? = try? await ImagePicker.photograph()
 ```
 PS：当然啦，肯定会有拿不到的情况，所有失败的场景我都使用了`ImagePicker.PickError`抛出，可通过`do {} catch {}`捕获。
 
-至此，封装的`ImagePicker`可以很方便地让我获取系统相册的照片和视频，虽然说通过**卡住子线程**这种做法不安全，也不建议，不过呢这种场景也不会使用很频繁，个人觉得还能接受，并且这个工具类更多的只是用来平时的调试，正式项目中我也不会用到，主要是熟悉一下`async/await`的特性。
+至此，封装的`ImagePicker`可以很方便地让我获取系统相册的照片和视频。
+不过获取相册数据一般都会用第三方库来做，我这个工具类只是更多的用来平时的调试，最主要是熟悉一下`async/await`的特性。
 
 That's all, thanks.

@@ -26,7 +26,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func photograph() {
-        // 基于闭包返回
+        // 基于闭包异步处理结果
 //        ImagePicker.photograph { [weak self] result in
 //            guard let self = self else { return }
 //            switch result {
@@ -37,7 +37,7 @@ class ViewController: UIViewController {
 //            }
 //        }
         
-        // 结构化并发返回
+        // 结构化并发同步处理结果
         Task {
             do {
                 let image = try await ImagePicker.photograph()
@@ -51,7 +51,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func openAlbum() {
-        // 基于闭包返回
+        // 基于闭包异步处理结果
 //        ImagePicker.openAlbumForObject { [weak self] result in
 //            guard let self = self else { return }
 //            switch result {
@@ -68,7 +68,7 @@ class ViewController: UIViewController {
 //            }
 //        }
         
-        // 结构化并发返回
+        // 结构化并发同步处理结果
         Task {
             do {
                 let object: AlbumObject = try await ImagePicker.openAlbum()
@@ -100,42 +100,12 @@ class ViewController: UIViewController {
 extension ViewController {
     func reset() {
         videoURL = nil
-        
-        imgHeight.constant = imgWidth.constant
-        UIView.animate(withDuration: 0.35) {
-            self.view.layoutIfNeeded()
-        }
-        
-        UIView.animate(withDuration: 0.2) {
-            self.titleLabel.alpha = 1
-            self.playBtn.alpha = 0
-        }
-        
-        UIView.transition(with: imgView, duration: 0.2, options: .transitionCrossDissolve) {
-            self.imgView.image = nil
-        }
+        updateUI(titleLabelAlpha: 1, playBtnAlpha: 0, image: nil)
     }
     
     func setupImage(_ image: UIImage) {
         videoURL = nil
-        
-        let imgRatio = image.size.height / image.size.width
-        imgHeight.constant = imgWidth.constant * imgRatio
-        if imgHeight.constant > 600 {
-            imgHeight.constant = 600
-        }
-        UIView.animate(withDuration: 0.35) {
-            self.view.layoutIfNeeded()
-        }
-        
-        UIView.animate(withDuration: 0.2) {
-            self.titleLabel.alpha = 0
-            self.playBtn.alpha = 0
-        }
-        
-        UIView.transition(with: imgView, duration: 0.2, options: .transitionCrossDissolve) {
-            self.imgView.image = image
-        }
+        updateUI(titleLabelAlpha: 0, playBtnAlpha: 0, image: image)
     }
     
     func setupVideo(_ videoURL: URL) {
@@ -150,22 +120,26 @@ extension ViewController {
         let cgImage = try! generator.copyCGImage(at: .zero, actualTime: nil)
         let image = UIImage(cgImage: cgImage)
         
-        let imgRatio = image.size.height / image.size.width
-        imgHeight.constant = imgWidth.constant * imgRatio
-        if imgHeight.constant > 600 {
-            imgHeight.constant = 600
-        }
-        UIView.animate(withDuration: 0.35) {
-            self.view.layoutIfNeeded()
-        }
-        
-        UIView.animate(withDuration: 0.2) {
-            self.titleLabel.alpha = 0
-            self.playBtn.alpha = 1
+        updateUI(titleLabelAlpha: 0, playBtnAlpha: 1, image: image)
+    }
+    
+    func updateUI(titleLabelAlpha: CGFloat, playBtnAlpha: CGFloat, image: UIImage?) {
+        UIView.animate(withDuration: 0.15) {
+            self.titleLabel.alpha = titleLabelAlpha
+            self.playBtn.alpha = playBtnAlpha
         }
         
-        UIView.transition(with: imgView, duration: 0.2, options: .transitionCrossDissolve) {
+        UIView.transition(with: imgView, duration: 0.15, options: .transitionCrossDissolve) {
             self.imgView.image = image
+        }
+        
+        imgHeight.constant = self.imgWidth.constant
+        if let image = image {
+            imgHeight.constant *= (image.size.height / image.size.width)
+            if imgHeight.constant > 600 { imgHeight.constant = 600 }
+        }
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0) {
+            self.view.layoutIfNeeded()
         }
     }
 }
