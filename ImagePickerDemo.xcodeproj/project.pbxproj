@@ -79,8 +79,8 @@
 		002E78F2295D39B80071E30C /* ImagePicker */ = {
 			isa = PBXGroup;
 			children = (
-				002E78F7295D3CA70071E30C /* ImagePicker.swift */,
 				0053547A296047A600E52CBB /* ImagePicker.API.swift */,
+				002E78F7295D3CA70071E30C /* ImagePicker.swift */,
 				002E78F9295D3CF80071E30C /* ImagePickerObject.swift */,
 			);
 			path = ImagePicker;

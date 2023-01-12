@@ -7,6 +7,7 @@
 
 import UIKit
 import UniformTypeIdentifiers
+import MobileCoreServices
 
 enum ImagePicker {
     // MARK: - ImagePicker.PickType
@@ -16,24 +17,46 @@ enum ImagePicker {
         case all // 图片+视频
         
         var types: [String] {
-            switch self {
-            case .photo:
-                return [
-                    UTType.image.identifier,
-                    UTType.livePhoto.identifier,
-                ]
-            case .video:
-                return [
-                    UTType.movie.identifier,
-                    UTType.video.identifier,
-                ]
-            case .all:
-                return [
-                    UTType.movie.identifier,
-                    UTType.video.identifier,
-                    UTType.image.identifier,
-                    UTType.livePhoto.identifier,
-                ]
+            if #available(iOS 14.0, *) {
+                switch self {
+                case .photo:
+                    return [
+                        UTType.image.identifier,
+                        UTType.livePhoto.identifier,
+                    ]
+                case .video:
+                    return [
+                        UTType.movie.identifier,
+                        UTType.video.identifier,
+                    ]
+                case .all:
+                    return [
+                        UTType.movie.identifier,
+                        UTType.video.identifier,
+                        UTType.image.identifier,
+                        UTType.livePhoto.identifier,
+                    ]
+                }
+            } else {
+                switch self {
+                case .photo:
+                    return [
+                        kUTTypeImage as String,
+                        kUTTypeLivePhoto as String,
+                    ]
+                case .video:
+                    return [
+                        kUTTypeMovie as String,
+                        kUTTypeVideo as String,
+                    ]
+                case .all:
+                    return [
+                        kUTTypeMovie as String,
+                        kUTTypeVideo as String,
+                        kUTTypeImage as String,
+                        kUTTypeLivePhoto as String,
+                    ]
+                }
             }
         }
     }

@@ -7,6 +7,7 @@
 
 import UIKit
 import UniformTypeIdentifiers
+import MobileCoreServices
 
 protocol ImagePickerObject {
     static func fetchFromPicker(_ info: [UIImagePickerController.InfoKey: Any]) throws -> Self
@@ -63,10 +64,18 @@ extension AlbumObject: ImagePickerObject {
     static func fetchFromPicker(_ info: [UIImagePickerController.InfoKey: Any]) throws -> Self {
         var imageData: Data?
         var videoURL: URL?
-        if let mediaType = info[.mediaType] as? String, mediaType == UTType.image.identifier {
-            imageData = try Data.fetchFromPicker(info)
+        if #available(iOS 14.0, *) {
+            if let mediaType = info[.mediaType] as? String, mediaType == UTType.image.identifier {
+                imageData = try Data.fetchFromPicker(info)
+            } else {
+                videoURL = try URL.fetchFromPicker(info)
+            }
         } else {
-            videoURL = try URL.fetchFromPicker(info)
+            if let mediaType = info[.mediaType] as? String, mediaType == (kUTTypeImage as String) {
+                imageData = try Data.fetchFromPicker(info)
+            } else {
+                videoURL = try URL.fetchFromPicker(info)
+            }
         }
         return Self.init(imageData: imageData, videoURL: videoURL)
     }
